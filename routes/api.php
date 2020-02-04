@@ -23,4 +23,4 @@ Route::get('stockscategory', 'StockController@getCategory');
 Route::get('stockssubcategory', 'StockController@getSubCategory');
 Route::get('building', 'StockController@getBuildings');
 
-
+Route::get('viewStockIn/{id}', 'StockController@viewStockIn');
