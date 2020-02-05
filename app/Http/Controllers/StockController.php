@@ -101,7 +101,68 @@ class StockController extends Controller
             ], 404);
           }
     }
+    public function viewStockInBuildingName($buildingname)
+    {
+       
 
-   
+        
+            $stock = DB::table('stockin')
+            ->join('registration', 'stockin.supid', '=', 'registration.id')
+            ->join('category', 'stockin.categoryid', '=', 'category.id')
+            ->join('subcategory', 'stockin.subcategoryid', '=', 'subcategory.id')
+            ->join('Buildings', 'stockin.buildingname', '=', 'Buildings.id')
+            ->select('stockin.*', 'registration.name', 'category.categoryname', 'subcategory.subcategoryname', 'Buildings.buildingsname')->where('Buildings.buildingsname', $buildingname)->get()->toJson(JSON_PRETTY_PRINT);
+            return response($stock, 200);
+        //   } else {
+        //     return response()->json([
+        //       "message" => "Student not found"
+        //     ], 404);
+        //   }
+    }
+    public function viewStockInBuildingId($buildingid)
+    {
+       
+
+        
+            $stock = DB::table('stockin')
+            ->join('registration', 'stockin.supid', '=', 'registration.id')
+            ->join('category', 'stockin.categoryid', '=', 'category.id')
+            ->join('subcategory', 'stockin.subcategoryid', '=', 'subcategory.id')
+            ->join('Buildings', 'stockin.buildingname', '=', 'Buildings.id')
+            ->select('stockin.*', 'registration.name', 'category.categoryname', 'subcategory.subcategoryname', 'Buildings.buildingsname')->where('stockin.buildingname', $stockin)->get()->toJson(JSON_PRETTY_PRINT);
+            return response($stock, 200);
+        //   } else {
+        //     return response()->json([
+        //       "message" => "Student not found"
+        //     ], 404);
+        //   }
+    }
+
+    public function viewStockByCategory($categoryName)
+    {
+       
+
+        
+            $stock = DB::table('stockin')
+            ->join('registration', 'stockin.supid', '=', 'registration.id')
+            ->join('category', 'stockin.categoryid', '=', 'category.id')
+            ->join('subcategory', 'stockin.subcategoryid', '=', 'subcategory.id')
+            ->join('Buildings', 'stockin.buildingname', '=', 'Buildings.id')
+            ->select('stockin.*', 'registration.name', 'category.categoryname', 'subcategory.subcategoryname', 'Buildings.buildingsname')->where('category.categoryname', $categoryName)->get()->toJson(JSON_PRETTY_PRINT);
+            return response($stock, 200);
+    }
+    
+
+    public function viewStockBysubCategory($subcategoryName)
+    {
+
+            $stock = DB::table('stockin')
+            ->join('registration', 'stockin.supid', '=', 'registration.id')
+            ->join('category', 'stockin.categoryid', '=', 'category.id')
+            ->join('subcategory', 'stockin.subcategoryid', '=', 'subcategory.id')
+            ->join('Buildings', 'stockin.buildingname', '=', 'Buildings.id')
+            ->select('stockin.*', 'registration.name', 'category.categoryname', 'subcategory.subcategoryname', 'Buildings.buildingsname')->where('subcategory.subcategoryname',$subcategoryName)->get()->toJson(JSON_PRETTY_PRINT);
+            return response($stock, 200);
+    }
 
 }
