@@ -17,10 +17,7 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 
-    ######################
-## Handling Options for the CORS
-     RewriteCond %{REQUEST_METHOD} OPTIONS
-     RewriteRule ^(.*)$ $1 [L,R=204]
+
 
 ###################
 ## Add custom headers
