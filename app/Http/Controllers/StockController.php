@@ -8,6 +8,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use PDF;
+use Excel;
 
 
 class StockController extends Controller
@@ -27,7 +28,7 @@ class StockController extends Controller
 
     public function stockInListapi()
     {
-           
+
         $result = DB::table('stockin')
                 ->join('registration', 'stockin.supid', '=', 'registration.id')
                 ->join('category', 'stockin.categoryid', '=', 'category.id')
@@ -35,19 +36,20 @@ class StockController extends Controller
                 ->join('Buildings', 'stockin.buildingname', '=', 'Buildings.id')
                 ->select('stockin.*', 'registration.name', 'category.categoryname', 'subcategory.subcategoryname', 'Buildings.buildingsname')
                 ->get();
+
             return $result;
     }
 
     public function categoryListapi()
     {
-           
+
         $result = DB::table('category')->select('category.*')->get();
         return $result;
     }
 
     public function subcategoryListapi()
     {
-           
+
         $result = DB::table('subcategory')->select('subcategory.*')->get();
         return $result;
     }
@@ -61,7 +63,7 @@ class StockController extends Controller
 
     public function viewStockIn($id)
     {
-       
+
         $stockInData = DB::table('stockin')->where('uniqtag', $id)->first();
         $suppliersData = DB::select('select * from registration');
         $categoryData = DB::table('category')->get();
@@ -85,7 +87,7 @@ class StockController extends Controller
 
     public function viewStockInUniq($uniqtag)
     {
-       
+
 
         if (DB::table('stockin')->where('uniqtag', $uniqtag)->exists()) {
             $stock = DB::table('stockin')
@@ -103,9 +105,9 @@ class StockController extends Controller
     }
     public function viewStockInBuildingName($buildingname)
     {
-       
 
-        
+
+
             $stock = DB::table('stockin')
             ->join('registration', 'stockin.supid', '=', 'registration.id')
             ->join('category', 'stockin.categoryid', '=', 'category.id')
@@ -121,9 +123,9 @@ class StockController extends Controller
     }
     public function viewStockInBuildingId($buildingid)
     {
-       
 
-        
+
+
             $stock = DB::table('stockin')
             ->join('registration', 'stockin.supid', '=', 'registration.id')
             ->join('category', 'stockin.categoryid', '=', 'category.id')
@@ -140,9 +142,9 @@ class StockController extends Controller
 
     public function viewStockByCategory($categoryName)
     {
-       
 
-        
+
+
             $stock = DB::table('stockin')
             ->join('registration', 'stockin.supid', '=', 'registration.id')
             ->join('category', 'stockin.categoryid', '=', 'category.id')
@@ -151,7 +153,7 @@ class StockController extends Controller
             ->select('stockin.*', 'registration.name', 'category.categoryname', 'subcategory.subcategoryname', 'Buildings.buildingsname')->where('category.categoryname', $categoryName)->get()->toJson(JSON_PRETTY_PRINT);
             return response($stock, 200);
     }
-    
+
 
     public function viewStockBysubCategory($subcategoryName)
     {
@@ -164,5 +166,7 @@ class StockController extends Controller
             ->select('stockin.*', 'registration.name', 'category.categoryname', 'subcategory.subcategoryname', 'Buildings.buildingsname')->where('subcategory.subcategoryname',$subcategoryName)->get()->toJson(JSON_PRETTY_PRINT);
             return response($stock, 200);
     }
+
+
 
 }

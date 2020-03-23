@@ -57,8 +57,9 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Address</label>
-                                    <textarea class="form-control" name="address" rows="3"></textarea>
+                                    <label>Password</label>
+                                    <input class="form-control" type="password" name="password" placeholder="Enter password">
+                                </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Register</button>
                             </form>

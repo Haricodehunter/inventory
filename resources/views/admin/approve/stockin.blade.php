@@ -18,14 +18,14 @@
                 </div>
                 @if(Session::get('stockScsMsg'))
                     <div class="alert alert-success">
-
+                    
                         {{ Session::get('stockScsMsg') }}
                     </div>
                 @endif
-
+test
                 @if(Session::get('stockErrMsg'))
                     <div class="alert alert-danger">
-
+                   
                         {{ Session::get('stockErrMsg') }}
                     </div>
                 @endif
@@ -51,7 +51,7 @@
                                            required>
                                 </div>
 
-
+                            
 
                                 <div class="form-group">
                                     <label>Uniq Tag</label>
@@ -79,9 +79,9 @@
 
                             </div>
                             <div class="col-lg-6">
+                         
 
-
-
+                            
                                 <div class="form-group">
                                 <label>Sub Category</label>
                                         <select class="form-control" name="subcategoryid" required>
@@ -95,14 +95,14 @@
                                 <div class="form-group">
                                 <div class="input-group control-group increment" >
                                     <input type="file" class="form-control" name="files[]" multiple>
-                                    <div class="input-group-btn">
+                                    <div class="input-group-btn"> 
                                         <button class="btn btn-success" type="button"><i class="glyphicon glyphicon-plus"></i>Add</button>
                                     </div>
                                 </div>
                                     <!-- <div class="clone hide">
                                     <div class="control-group input-group" style="margin-top:10px">
                                         <input type="file" class="form-control" name="files[]" multiple>
-                                        <div class="input-group-btn">
+                                        <div class="input-group-btn"> 
                                         <button class="btn btn-danger" type="button"><i class="glyphicon glyphicon-remove"></i>Remove</button>
                                         </div>
                                     </div>
@@ -183,12 +183,12 @@
 
 $(document).ready(function() {
 
-$(".btn-success").click(function(){
+$(".btn-success").click(function(){ 
     var html = $(".clone").html();
     $(".increment").after(html);
 });
 
-$("body").on("click",".btn-danger",function(){
+$("body").on("click",".btn-danger",function(){ 
     $(this).parents(".control-group").remove();
 });
 

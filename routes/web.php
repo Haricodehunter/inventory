@@ -60,7 +60,9 @@ Route::get('viewstock/{id}', 'UserController@viewstockin');
 //Delete StockIn
 Route::get('deletestockin/{id}', 'UserController@deleteStockIn');
 
+Route::post('approvestockin/{id}', 'UserController@updateapproveStockIn');
 
+Route::get('approve/{id}', 'UserController@viewapproveStockIn');
 /*
  * Stockout Routes
  */
@@ -109,6 +111,10 @@ Route::get('deleterole/{id}', 'UserController@deleteRole');
 Route::get('/invoice/{id}', 'UserController@invoice');
 
 
+Route::get('/import_excel', 'ImportExcelController@index');
+Route::post('/import_excel/import', 'ImportExcelController@importJson');
 
+Route::get('import-excel', 'ImportExcel\ImportExcelController@index');
+Route::post('import-excel', 'ImportExcel\ImportExcelController@import');
 
-
+Route::get('/', 'UserController@roleList');

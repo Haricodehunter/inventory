@@ -27,33 +27,27 @@
             {{ Session::get('errDeleteStockInMsg') }}
         </div>
     @endif
+    @if (Session::get('admin_name''))
+                {{ Session::get('admin_name'); }}
 
+                @endif
 
-<?php $user = Auth::user();
-
-
-
-print($user);
-
-?>
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading role-list-info-header">
                     <p>StockIn Information <?php
-		$name = Session::get('admin_name');
+        $name = Session::get('admin_name');
+
         $roleid =Session::get('admin_roleid');
+                echo $name;
 
-
-        echo $name;
-
-        echo $roleid;
-
-
+                echo $roleid;
 		// var_dump($name);
-		?> </p>
+		?></p>
                     <a href="{{ url('/stockin') }}" class="btn btn-success">+ Add StockIn</a>
                 </div>
+
 
                 <!-- /.panel-heading -->
                 <div class="panel-body">

@@ -205,7 +205,7 @@
             <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
         </a>
         <ul class="dropdown-menu dropdown-user">
-            <li><a href="#"><i class="fa fa-user fa-fw"></i> {{ Session::get('admin_name') }} </a>
+            <li><a href="#"><i class="fa fa-user fa-fw"></i> {{ Session::get('admin_name') }} {{ Session::get('admin_roleid') }} </a>
             </li>
             <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
             </li>

@@ -99,9 +99,9 @@ class UserController extends Controller
         $cell = $request->cell;
         $email = $request->email;
         $role = $request->role;
-        $address = $request->address;
+        $password = $request->password;
 
-        $results = DB::insert('insert into registration(name, cell, email, address, roleid) values (?, ?, ?, ?, ?)', [$name, $cell, $email, $address, $role]);
+        $results = DB::insert('insert into tbl_users(name, cell, email, password, roleid) values (?, ?, ?, ?, ?)', [$name, $cell, $email, $password, $role]);
 
         if ($results != false) {
             return redirect('/registration')->with('regScsMsg', 'Registration Successful');
@@ -112,17 +112,26 @@ class UserController extends Controller
 
     public function userList()
     {
-        $result = DB::table('registration')
-            ->join('role', 'registration.roleid', '=', 'role.id')
-            ->select('registration.*', 'role.name as rolename')
+        $result = DB::table('tbl_users')
+            ->join('role', 'tbl_users.roleid', '=', 'role.id')
+            ->select('tbl_users.*', 'role.name as rolename')
             ->get();
 //        dd($result);
         return view('admin.users.userlist', compact('result'));
     }
 
+//     public function userList()
+//     {
+//         $result = DB::table('registration')
+//             ->join('role', 'registration.roleid', '=', 'role.id')
+//             ->select('registration.*', 'role.name as rolename')
+//             ->get();
+// //        dd($result);
+//         return view('admin.users.userlist', compact('result'));
+//     }
     public function editUser($id)
     {
-        $userData = DB::table('registration')->where('id', $id)->first();
+        $userData = DB::table('tbl_users')->where('id', $id)->first();
         $roleData = DB::select('select * from role');
         return view('admin.users.updateuser', ['userData' => $userData, 'roleData' => $roleData]);
 
@@ -134,9 +143,9 @@ class UserController extends Controller
         $cell = $request->cell;
         $email = $request->email;
         $role = $request->role;
-        $address = $request->address;
+        $password = $request->password;
 
-        $result = DB::update('update registration set name = ?, cell = ?, email = ?, address = ?, roleid = ? where id = ?', [$name, $cell, $email, $address, $role, $id]);
+        $result = DB::update('update tbl_users set name = ?, cell = ?, email = ?, password = ?, roleid = ? where id = ?', [$name, $cell, $email, $password, $role, $id]);
 
         if ($result != false) {
             return redirect('/users')->with('updateUserMsg', 'User Information Updated Successfully');
@@ -173,7 +182,6 @@ class UserController extends Controller
     public function stockIn(Request $request)
     {
 
-
         $supid = $request->supname;
         $lotname = $request->lotname;
         $categoryid= $request->categoryid;
@@ -184,7 +192,7 @@ class UserController extends Controller
         $buildingname=$request->buildingname;
         $uniqtag=$request->uniqtag;
         $notes=$request->notes;
-   
+
         $images = $request->file('files');
         if ($request->hasFile('files')) :
                 foreach ($images as $item):
@@ -200,7 +208,7 @@ class UserController extends Controller
         endif;
 
 
-      
+
         /*Insert your data*/
 
     echo($request);
@@ -216,14 +224,14 @@ class UserController extends Controller
         // $rent = $request->rent;
         // $totalrent = $request->totalrent;
         // $truck = $request->truck;
-        
+
 
 
 //        $user = DB::table('registration')->where('id', $supid)->first();
 //        $supname = $user->name;
-        
+
         $results = DB::insert('insert into stockin(supid, lotname, categoryid, subcategoryid, approvedby, approvaldate, buildingname, uniqtag, image, note) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [$supid, $lotname, $categoryid, $subcategoryid, $apporvedby, $apporvaldate, $buildingname, $uniqtag, $image,  $notes]);
-      
+
         if ($results != false) {
             return redirect('/stockin')->with('stockScsMsg', 'StockIn information save Successfully');
             //return redirect('/stockin')->with('stockScsMsg', $image);
@@ -235,7 +243,7 @@ class UserController extends Controller
             //return redirect('/stockin')->with('stockScsMsg', $image);
         }
 
-        
+
 
        // return view('admin.stockin.stockin', ['categoryData' => $categoryData, 'subcategoryData' => $subcategoryData, 'buildingData' => $buildingData, 'adminData' => $adminData ]);
        //return view('admin.stockin.stockin', compact('buildingData'));
@@ -253,6 +261,9 @@ class UserController extends Controller
             ->get();
         return view('admin.stockin.stockinlist', compact('result'));
     }
+
+
+
 
     public function editStockIn($id)
     {
@@ -282,12 +293,45 @@ class UserController extends Controller
         } else {
             return redirect('/updatestockin/' . $id)->with('errUpdateStockInMsg', 'Error! StockIn not updated.');
         }
+
+
     }
 
 
+    public function viewapproveStockIn(Request $request, $id)
+    {
+
+        $stockInData = DB::table('stockin')->where('id', $id)->first();
+        $suppliersData = DB::select('select * from registration');
+        $categoryData = DB::table('category')->get();
+        $subcategoryData = DB::table('subcategory')->get();
+        $buildingData = DB::table('Buildings')->get();
+        return view('admin.approve.viewstock', ['stcInData' => $stockInData, 'suppData' => $suppliersData,  'buildingData' => $buildingData, 'subcategoryData' =>  $subcategoryData, 'categoryData' => $categoryData]);
+    }
+
+    public function updateapproveStockIn(Request $request, $id)
+    {
+
+
+        $approvedname =  $request->approvedby;
+        $approvedate = date("m-d-y");
+
+        echo $approvedname;
+
+        $result = DB::update('update stockin set Approved = ?, approvaldate = ?, approvedby = ? where id = ?', [ 1, $approvedate, $approvedname, $id]);
+
+         if ($result != false) {
+             return redirect('/stockinlist')->with('updateStockInMsg', 'Approval Updated Successfully');
+        } else {
+             return redirect('/approvestockin/' . $id)->with('errUpdateStockInMsg', 'Error! Approval not updated.');
+         }
+
+
+    }
+
     public function viewStockIn(Request $request, $id)
     {
-       
+
         $stockInData = DB::table('stockin')->where('id', $id)->first();
         $suppliersData = DB::select('select * from registration');
         $categoryData = DB::table('category')->get();
@@ -305,9 +349,9 @@ class UserController extends Controller
             return redirect('/stockinlist')->with('errDeleteStockInMsg', 'Error!! StockIn item not deleted');
         }
     }
-    
 
-    
+
+
     /*
      * Stockout
      */
@@ -334,9 +378,9 @@ class UserController extends Controller
     public function stockOut(Request $request)
     {
 
-   
-   
-    
+
+
+
         $supid = $request->supname;
         $lotid = $request->lotname;
         $lotnumber = $request->lotnumber;
@@ -433,4 +477,56 @@ class UserController extends Controller
       $stocklist = DB::table('stockin') ->get();
       return    $stocklist;
     }
+
+    public function categoryList()
+    {
+        $result = DB::table('category')->get();
+//        dd($result);
+        return view('admin.category.', compact('result'));
+    }
+
+//     public function userList()
+//     {
+//         $result = DB::table('registration')
+//             ->join('role', 'registration.roleid', '=', 'role.id')
+//             ->select('registration.*', 'role.name as rolename')
+//             ->get();
+// //        dd($result);
+//         return view('admin.users.userlist', compact('result'));
+//     }
+    public function editCategory($id)
+    {
+        $userData = DB::table('')->where('category', $id)->first();
+        $roleData = DB::select('select * from role');
+        return view('admin.users.updateuser', ['userData' => $userData, 'roleData' => $roleData]);
+
+    }
+
+    public function updateCategory(Request $request, $id)
+    {
+        $name = $request->name;
+        $cell = $request->cell;
+        $email = $request->email;
+        $role = $request->role;
+        $address = $request->address;
+
+        $result = DB::update('update registration set name = ?, cell = ?, email = ?, address = ?, roleid = ? where id = ?', [$name, $cell, $email, $address, $role, $id]);
+
+        if ($result != false) {
+            return redirect('/users')->with('updateUserMsg', 'User Information Updated Successfully');
+        } else {
+            return redirect('/updateuser/' . $id)->with('errUpdateUserMsg', 'Error! User Information not updated.');
+        }
+    }
+
+    public function deleteCategory($id)
+    {
+        $userData = DB::delete('delete from registration where id = ?', [$id]);
+        if ($userData != false) {
+            return redirect('/users')->with('deleteUserMsg', 'User deleted successfully');
+        } else {
+            return redirect('/users')->with('errDeleteUserMsg', 'Error!! User not deleted');
+        }
+    }
+
 }

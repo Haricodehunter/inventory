@@ -25,7 +25,9 @@ class AdminController extends Controller
             ->first();
         if ($results) {
             Session::put('admin_name', $results->name);
+            Session::put('admin_result', $results);
             Session::put('admin_id', $results->id);
+            Session::put('admin_roleid', $results->roleid);
             return Redirect::to('/dashboard');
         } else {
             Session::put('message', 'Email or Password Invalid');

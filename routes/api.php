@@ -32,3 +32,4 @@ Route::get('subcategory', 'StockController@subcategoryListapi');
 Route::get('viewStockInBuildingName/{buildingname}', 'StockController@viewStockInBuildingName');
 Route::get('viewStockInBuildingId/{buildingid}', 'StockController@viewStockInBuildingName');
 Route::get('viewStockByCategory/{categoryName}', 'StockController@viewStockInBuildingName');
+Route::get('users', 'UserController@userList');

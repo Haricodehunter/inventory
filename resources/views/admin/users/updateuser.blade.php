@@ -45,6 +45,11 @@
                                            value="{{ $userData->email }}">
                                 </div>
                                 <div class="form-group">
+                                    <label>Password</label>
+                                    <input class="form-control" type="password" name="password"
+                                           value="{{ $userData->password }}">
+                                </div>
+                                <div class="form-group">
                                     <label>Select Role</label>
                                     <select class="form-control" name="role" required>
                                         <option value="">Select</option>
@@ -53,11 +58,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label>Address</label>
-                                    <textarea class="form-control" name="address"
-                                              rows="3">{{ $userData->address }}</textarea>
-                                </div>
+
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </form>
                         </div>
