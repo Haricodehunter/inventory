@@ -10,6 +10,7 @@ use DB;
 use PDF;
 use Excel;
 
+use App\stockin;
 
 class StockController extends Controller
 {
@@ -166,6 +167,66 @@ class StockController extends Controller
             ->select('stockin.*', 'registration.name', 'category.categoryname', 'subcategory.subcategoryname', 'Buildings.buildingsname')->where('subcategory.subcategoryname',$subcategoryName)->get()->toJson(JSON_PRETTY_PRINT);
             return response($stock, 200);
     }
+
+    public function updateapproveStockIn(Request $request, $id)
+    {
+
+
+        $approvedname =  $request->approvedby;
+        $approvedate = date("m-d-y");
+
+        echo $approvedname;
+
+        $result = DB::update('update stockin set Approved = ?, approvaldate = ?, approvedby = ? where id = ?', [ 1, $approvedate, $approvedname, $id]);
+
+         if ($result != false) {
+            return response($stock, 200);
+        } else {
+            return response($stock, 300);
+
+
+    }
+
+}
+
+
+public function createStockin(Request $request) {
+    $stockin = new stockin;
+    $stockin->name = $request->lotname;
+    $stockin->categoryid = $request->category;
+    $stockin->subcategoryid = $request->subcategory;
+    $stockin->note = $request->note;
+    $stockin->image = $request->image;
+    $stockin->Approved = $request->approved;
+    $stockin->approvaldate = $request->approvaldate;
+    $stockin->approvedby = $request->approvedby;
+    $stockin->buildingname = $request->buildingname;
+    $stockin->uniqtag = $request->uniqtag;
+    $stockin->save();
+    return response()->json([
+        "message" => "Stock record created"
+    ], 201);
+
+}
+
+public function updateApprove(Request $request, $id) {
+    if (stockin::where('id', $id)->exists()) {
+        $stockin = stockin::find($id);
+        $stockin->approved = is_null($request->approved) ? $stockin->approved : $request->approved;
+        $stockin->approvedby = is_null($request->approvedby) ? $stockin->approvedby : $request->approvedby;
+        $stockin->approvaldate = is_null($request->approvaldate) ? $stockin->approvaldate : date("m-d-y");
+        $stockin->save();
+
+        return response()->json([
+            "message" => "records updated successfully"
+        ], 200);
+        } else {
+        return response()->json([
+            "message" => "Student not found"
+        ], 404);
+
+    }
+}
 
 
 

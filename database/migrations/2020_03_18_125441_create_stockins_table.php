@@ -13,7 +13,7 @@ class CreateStockinsTable extends Migration
      */
     public function up()
     {
-        Schema::create('stockins', function (Blueprint $table) {
+        Schema::create('stockin', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('supid');
             $table->string('lotname');
@@ -37,6 +37,6 @@ class CreateStockinsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stockins');
+        Schema::dropIfExists('stockin');
     }
 }

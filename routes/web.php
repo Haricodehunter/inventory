@@ -118,3 +118,7 @@ Route::get('import-excel', 'ImportExcel\ImportExcelController@index');
 Route::post('import-excel', 'ImportExcel\ImportExcelController@import');
 
 Route::get('/', 'UserController@roleList');
+
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.request');
+Route::post('password/reset', 'Auth\ResetPasswordController@postReset')->name('password.reset');
+

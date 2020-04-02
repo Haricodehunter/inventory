@@ -17,6 +17,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('register', 'AuthController@register');
+Route::post('login', 'AuthController@login');
+Route::post('recover', 'AuthController@recover');
+
+Route::group(['middleware' => ['jwt.auth']], function() {
+    Route::get('logout', 'AuthController@logout');
+});
+
 Route::apiResource('stocks', 'StockController');
 Route::get('stockslist', 'StockController@stockInListapi');
 Route::get('stockscategory', 'StockController@getCategory');
@@ -33,3 +41,4 @@ Route::get('viewStockInBuildingName/{buildingname}', 'StockController@viewStockI
 Route::get('viewStockInBuildingId/{buildingid}', 'StockController@viewStockInBuildingName');
 Route::get('viewStockByCategory/{categoryName}', 'StockController@viewStockInBuildingName');
 Route::get('users', 'UserController@userList');
+Route::post('approvestockin/{id}', 'StockController@updateApprove');
